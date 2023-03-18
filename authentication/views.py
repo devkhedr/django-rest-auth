@@ -3,15 +3,17 @@ from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from users.models import User
 from .serializers import UserRegiserSerializer
 from users.serializers import UserSerializer
+from users.models import User
+from .permissions import IsNotAuthenticated
 # Create your views here.
 
 
 class LoginView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = AuthTokenSerializer
+    permission_classes = (IsNotAuthenticated,)
 
     def create(self, request, *args, **kwargs):
         serializer = AuthTokenSerializer(data=request.data)
@@ -32,6 +34,7 @@ class LoginView(CreateAPIView):
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegiserSerializer
+    permission_classes = (IsNotAuthenticated,)
 
     def create(self, request, *args, **kwargs):
         serializer = UserRegiserSerializer(data=request.data)
@@ -49,6 +52,5 @@ class RegisterView(CreateAPIView):
                 "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "bio": user.bio
             }
         },  status=status.HTTP_201_CREATED)
