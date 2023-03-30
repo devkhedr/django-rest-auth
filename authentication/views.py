@@ -1,9 +1,8 @@
 from knox.auth import AuthToken
 from rest_framework import status
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from .serializers import UserRegiserSerializer, UserSerializer
+from .serializers import UserRegiserSerializer, AuthTokenSerializer, UserSerializer
 from .models import User
 from .permissions import IsNotAuthenticated
 
@@ -27,6 +26,7 @@ class LoginView(CreateAPIView):
                     "id": user.id,
                     "username": user.username,
                     "email": user.email,
+                    "phone": user.phone_number,
                 },
             },
             status=status.HTTP_201_CREATED,
@@ -58,6 +58,7 @@ class RegisterView(CreateAPIView):
                     "id": user.id,
                     "username": user.username,
                     "email": user.email,
+                    "phone": user.phone_number,
                 },
             },
             status=status.HTTP_201_CREATED,
